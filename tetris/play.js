@@ -297,7 +297,7 @@ function move(){
     }
     //下キー押し込み
     if(g_downPush || game.flg['down']){
-        g_downCount+=60; //20
+        g_downCount+=20; //20
     }
 
     //自由落下
@@ -401,87 +401,59 @@ function rotate(){
  * 箇所は，中心点から見て左右下を判定
  */
 function detectionCollisionRotate(points,centerX,centerY){
-    var collPosition={l:0,r:0,d:0,u:0};
+    var position={l:0,r:0,d:0,u:0};
     var gap={x:0,y:0};
+    //衝突位置確認
     for(var i=0;i<points.length;i++){
-        //地面めり込み
-        if(points[i].y > 20){
-            collPosition.d++;
-            //中心点からみてどの位置か
-            if(points[i].x < centerX){
-                //左下
-                collPosition.l++;
-            }else if(points[i].x > centerX){
-                //右下
-                collPosition.r++;
-            }else{
-                //真下
-            }
-
-        }else if(points[i].x > 10){
-            //右壁めり込み
-            collPosition.r++;
-            //中心点からみてどの位置か
-            if(points[i].y > centerY){
-                //右上
-                collPosition.u++;
-            }else if(points[i].y < centerY){
-                //右下
-                collPosition.d++;
-            }else{
-                //右
-            }
-        }else if(points[i].x < 1){
-            //左壁めりこみ
-            collPosition.l++;
-            //中心点からみてどの位置か
-            if(points[i].y > centerY){
-                //左上
-                collPosition.u++;
-            }else if(points[i].y < centerY){
-                //左下
-                collPosition.d++;
-            }else{
-                //左
-            }
-        }else{
-            //設置ミノと衝突してないか
-            if(points[i].y > 0){
-                if(g_stage[points[i].y-1][points[i].x-1] == 1){
-                    //中心点からみてどの位置か
-                    if(points[i].y < centerY) collPosition.d++;
-                    else if(points[i].y > centerY) collPosition.u++;
-                    if(points[i].x > centerX) collPosition.r++;
-                    else if(points[i].x < centerX) collPosition.l++; 
-                }
-            }
+        //ステージ右側の衝突
+        if(points[i].x > 10){
+            position.r++;
         }
 
+        //ステージ左側の衝突
+        else if(points[i].x < 1){
+            position.l++;
+        }
+
+        //ステージ下の衝突
+        if(points[i].y > 20){
+            position.d++;
+        }
+
+        //接地ミノ
+        if(points[i].y > 0){
+            if(g_stage[points[i].y-1][points[i].x-1] == 1){
+                //中心点からみてどの位置か
+                if(points[i].y < centerY) position.d++;
+                else if(points[i].y > centerY) position.u++;
+                if(points[i].x > centerX) position.r++;
+                else if(points[i].x < centerX) position.l++; 
+            }              
+        }
+  
     }
 
-    //ギャップ判定   
-    if(collPosition.r==2 || collPosition.l==2 || collPosition.d==2 || collPosition.u==2){
-        if(collPosition.r!=1 && collPosition.l!=1 && collPosition.d!=1 && collPosition.u!=1){
-            //十字２
-            if(collPosition.r==2) gap.x-=2;
-            else if(collPosition.l==2) gap.x+=2;
-            else if(collPosition.d==2) gap.y-=2;
-            else if(collPosition.u==2) gap.y+=2;
+    //移動値
+    if(position.r==2 || position.l==2 || position.u==2 || position.d==2){
+        if(position.r!=1 && position.l!=1 && position.u!=1 && position.d!=1){
+            //十字2マス
+            if(position.r==2) gap.x-=2;
+            else if(position.l==2) gap.x+=2;
+            else if(position.d==2) gap.y-=2;
+            else if(position.u==2) gap.y+=2;
         }else{
             //十字１＋斜め１
-            if(collPosition.r > 0) gap.x--;
-            else if(collPosition.l > 0) gap.x++;
-            else if(collPosition.d > 0) gap.y--;
-            else if(collPosition.u > 0) gap.y++;
+            if(position.r > 0) gap.x--;
+            else if(position.l > 0) gap.x++;
+            else if(position.d > 0) gap.y--;
+            else if(position.u > 0) gap.y++;
         }
-    }else if(collPosition.r || collPosition.l || collPosition.d || collPosition.u){
-        //十字のみ，斜めのみ
-        if(collPosition.l) gap.x++;
-        else if(collPosition.r) gap.x--;
-        else if(collPosition.d) gap.y--;
-        else if(collPosition.u) gap.y++; 
-    }else{
-        //オール０
+    }else if(position.r || position.l || position.u || position.d){
+        //十字or斜め1マス
+        if(position.l) gap.x++;
+        else if(position.r) gap.x--;
+        else if(position.d) gap.y--;
+        else if(position.u) gap.y++; 
     }
 
     return gap;
@@ -519,7 +491,7 @@ function deleteMino(points){
         }
     }
 
-    console.log(count);
+    // console.log(count);
     return result;
 }
 
