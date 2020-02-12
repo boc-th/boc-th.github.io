@@ -1,0 +1,93 @@
+/**
+ * 縦＞横のスタイル
+ */
+ /*ダブルタップ禁止*/
+html,div{
+    /* touch-action: manipulation; */
+    
+    -webkit-user-select: none;  /* Chrome or Safari */
+    -moz-user-select: none;     /* FireFox */
+    -ms-user-select: none;      /* IE */
+    -o-user-select: none;       /* Opera */
+    user-select: none;
+
+}
+body{
+    margin: 0px;
+}
+canvas{
+    background: black;
+    height: 65%;
+    width: 100%;
+}
+#_controller_box{
+    position: relative;
+    width: 100%;
+    height: 35%;
+    background: rgb(255, 255, 255);
+    overflow: hidden;
+}
+#_cross_key_box{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 45vw;
+    max-width: 250px;
+    height: 45vw;
+    max-height: 250px;
+    /* background: rgb(252, 252, 252); */
+}
+#_command_key_box{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: 45vw;
+    max-width: 250px;
+    height: 45vw;
+    max-height: 250px;
+    /* background: rgb(21, 252, 0); */
+}
+#_left,#_right{
+    position: absolute;
+    top: 40%;
+    width: 35%;
+    height: 20%;
+    border: 2px solid black;
+}
+#_up,#_down{
+    position: absolute;
+    right: 40%;
+    width: 20%;
+    height: 35%;
+    border: 2px solid black;
+}
+#_right{
+    right: 0px;
+}
+#_down{
+    bottom: 0px;
+}
+#_a,#_b,#_c,#_d{
+    position: absolute;
+    width: 35%;
+    height: 35%;
+    border: 2px solid black;
+    border-radius: 100%;
+    text-align: center;
+}
+#_a{
+    right: 0px;
+    top: 30%;
+    right: 0px;
+}
+#_b{
+    bottom: 0px;
+    right: 30%;
+}
+#_c{
+    left: 0px;
+    top: 30%;
+}
+#_d{
+    right: 30%;
+}
