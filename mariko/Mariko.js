@@ -56,7 +56,6 @@
         //キャンバスにおけるプレイヤーの描画Y座標
         this.canvasOffsetY = this.mapOffsetY - cameraOffsetY;
 
-        this.img.src = 'img/bou.png';
         ctx.drawImage(this.img, this.action, this.direction, this.pixel, this.pixel, this.canvasOffsetX, this.canvasOffsetY, this.size, this.size);
      }
 
