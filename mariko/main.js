@@ -1,21 +1,27 @@
 //キー関連
-const SPACE_KEY = 32;
-const LEFT_KEY = 37;
-const RIGHT_KEY = 39;
+const SHIFT_KEY = 16;
+const A_KEY = 65;
+const D_KEY = 68;
 const DOWN_KEY = 40;
-const UP_KEY = 38;
-var g_spacePush = false;
-var g_leftPush = false;
-var g_rightPush = false;
+const ENTER_KEY = 13;
+var g_shiftPush = false;
+var g_aPush = false;
+var g_dPush = false;
 var g_downPush = false;
-var g_upPush = false;
+var g_enterPush = false;
+
+var g_gameOverFlg = false;
 
 
 var game;
 var play;
-var canvasH; //canvas高さ y
-var canvasW; //canvas幅
 var ctx; 
+var g_canvasH; //canvas高さ y
+var g_canvasW; //canvas幅
+var g_chipSize; //マップチップ１個の大きさ
+var g_cameraMapOffsetX; //カメラのマップX座標
+var g_cameraMapOffsetY; //カメラのマップY座標 
+
 
 /**
  * 最初に呼ばれる
@@ -29,9 +35,13 @@ window.onload = function(){
     game = new GameController();
     game.run();
 
-    canvasH = game.canvasHeight;
-    canvasW = game.canvasWidth;
+    g_canvasH = game.canvasHeight;
+    g_canvasW = game.canvasWidth;
+    g_chipSize = g_canvasH/13;
     ctx =game.context;
+
+    // g_cameraMapOffsetX = this.g_chipSize*-1; //カメラのマップX座標
+    // g_cameraMapOffsetY = this.g_chipSize*1; //カメラのマップY座標 
 
     play = new Play();
 
@@ -41,6 +51,10 @@ window.onload = function(){
 
 
 function main(){
+    if(g_gameOverFlg){
+        console.log('out');
+        return;
+    }
     requestAnimationFrame(main);
     play.run();
 }
@@ -53,23 +67,23 @@ function keyDown(event){
     var code = event.keyCode; //どのキーが押されたか
     switch(code){
         //スペース
-        case SPACE_KEY:
+        case SHIFT_KEY:
             //スクロール禁止
             event.returnValue = false; //ie
             event.preventDefault(); //firefox
-            g_spacePush = true;
+            g_shiftPush = true;
             break;
         //左
-        case LEFT_KEY:
+        case A_KEY:
             event.returnValue = false; //ie
             event.preventDefault(); //firefox
-            g_leftPush = true;
+            g_aPush = true;
             break;
         //右
-        case RIGHT_KEY:
+        case D_KEY:
             event.returnValue = false; //ie
             event.preventDefault(); //firefox
-            g_rightPush = true;
+            g_dPush = true;
             break;
         //下
         case DOWN_KEY:
@@ -78,10 +92,10 @@ function keyDown(event){
             g_downPush = true;
             break
         //上
-        case UP_KEY:
+        case ENTER_KEY:
             event.returnValue = false; //ie
             event.preventDefault(); //firefox
-            g_upPush = true;
+            g_enterPush = true;
             break
     }
 }
@@ -92,24 +106,24 @@ function keyUp(event) {
 	code = event.keyCode;
 	switch(code) {
 	    // スペースキー
-	    case SPACE_KEY:
-            g_spacePush = false;
+	    case SHIFT_KEY:
+            g_shiftPush = false;
 	        break;
 	    // ←キー
-	    case LEFT_KEY:
-	        g_leftPush = false;
+	    case A_KEY:
+	        g_aPush = false;
             break;
         // →キー
-	    case RIGHT_KEY:
-	        g_rightPush = false;
+	    case D_KEY:
+	        g_dPush = false;
             break;
         // ↓キー
 	    case DOWN_KEY:
 		    g_downPush = false;
             break;
         //上
-	    case UP_KEY:
-		    g_upPush = false;
+	    case ENTER_KEY:
+		    g_enterPush = false;
 	        break;
 	}
 }

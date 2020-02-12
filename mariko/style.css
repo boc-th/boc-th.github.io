@@ -1,6 +1,17 @@
 /**
  * 縦＞横のスタイル
  */
+ /*ダブルタップ禁止*/
+html,div{
+    /* touch-action: manipulation; */
+    
+    -webkit-user-select: none;  /* Chrome or Safari */
+    -moz-user-select: none;     /* FireFox */
+    -ms-user-select: none;      /* IE */
+    -o-user-select: none;       /* Opera */
+    user-select: none;
+
+}
 body{
     margin: 0px;
 }

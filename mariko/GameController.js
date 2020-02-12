@@ -184,3 +184,22 @@ class GameController{
     }
 
 }
+
+//拡大禁止
+document.documentElement.addEventListener('touchstart',function(e){
+    if(e.touches.length >= 2){e.preventDefault();}
+  },{passive:false});
+
+  var __game_t=0;
+  document.documentElement.addEventListener('touchend',function(e){
+    var now = new Date().getTime();
+    if((now - __game_t)<350){
+      e.preventDefault();
+    }
+    __game_t=now;
+  },false);
+
+  //選択禁止
+//   document.onselectstart = function () {
+//       return false;
+//   }
