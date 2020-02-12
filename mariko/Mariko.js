@@ -9,7 +9,7 @@
  class Mariko{
      constructor(){
          this.img = new Image();
-         this.img.src = 'img/bou.png'; //キャラの画像
+         this.img.src = 'img/bou.PNG'; //キャラの画像
          this.size = g_chipSize; //キャラのサイズ
          this.pixel = 128; //キャラの一枚のピクセル数
          this.actions={
