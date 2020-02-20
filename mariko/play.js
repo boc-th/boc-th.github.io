@@ -4,7 +4,7 @@
 class Play{
     constructor(){
         this.mariko = new Mariko();
-        this.map = new Map();
+        this.map = new Map(this.mariko.InitialMapOffsetX,this.mariko.InitialMapOffsetY);
     }
 
     //メイン処理
@@ -13,12 +13,17 @@ class Play{
         g_cameraMapOffsetX = this.getCameraMapOffsetX(this.map.width,this.mariko.mapOffsetX);
         g_cameraMapOffsetY = this.getCameraMapOffsetY(this.map.height,this.mariko.mapOffsetY);
         this.draw();
+        // console.log(this.mariko.mapOffsetX+':'+this.mariko.mapOffsetY);
     }
 
     draw(){
         ctx.clearRect(0,0,game.canvasWidth,game.canvasHeight); //canvas初期化.
         this.map.draw(g_cameraMapOffsetX,g_cameraMapOffsetY);
         this.mariko.draw(g_cameraMapOffsetX,g_cameraMapOffsetY);
+
+        // ctx.fillStyle='#ffffff';
+        // ctx.font = "300px serif";
+        // ctx.fillText("Hello world", 550, 550);
     }
 
     move(){

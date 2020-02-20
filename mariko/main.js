@@ -37,7 +37,7 @@ window.onload = function(){
 
     g_canvasH = game.canvasHeight;
     g_canvasW = game.canvasWidth;
-    g_chipSize = g_canvasH/13;
+    g_chipSize = Math.floor(g_canvasH/13);
     ctx =game.context;
 
     // g_cameraMapOffsetX = this.g_chipSize*-1; //カメラのマップX座標

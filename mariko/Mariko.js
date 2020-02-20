@@ -19,8 +19,8 @@
              stay:0,
          }
 
-         this.InitialMapOffsetY = this.size*10; //キャラの初期マップ座標Y
-         this.InitialMapOffsetX = this.size*1; //キャラの初期マップ座標X
+         this.InitialMapOffsetY = this.size*4; //キャラの初期マップ座標Y
+         this.InitialMapOffsetX = this.size*24; //キャラの初期マップ座標X
          this.mapOffsetX = this.InitialMapOffsetX; //プレーヤーのマップx座標
          this.mapOffsetY = this.InitialMapOffsetY //プレーヤーのマップy座標
          this.canvasOffsetX; //プレイヤーキャンバス座標X
