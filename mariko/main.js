@@ -1,3 +1,7 @@
+/**
+ * 定数，グローバル変数，ファイル，オブジェクトの用意
+ */
+
 //キー関連
 const SHIFT_KEY = 16;
 const A_KEY = 65;
@@ -13,9 +17,11 @@ var g_enterPush = false;
 var g_gameOverFlg = false;
 
 
-var game;
+var controller;
 var play;
 var ctx; 
+var map;
+var characters; //各キャラのインスタンスを配列で保存
 var g_canvasH; //canvas高さ y
 var g_canvasW; //canvas幅
 var g_chipSize; //マップチップ１個の大きさ
@@ -32,25 +38,32 @@ window.onload = function(){
     window.addEventListener('keydown',keyDown,true);
     window.addEventListener('keyup',keyUp,true);
 
-    game = new GameController();
-    game.run();
+    controller = new GameController();
+    controller.run();
 
-    g_canvasH = game.canvasHeight;
-    g_canvasW = game.canvasWidth;
-    g_chipSize = Math.floor(g_canvasH/13);
-    ctx =game.context;
+    g_canvasH = controller.canvasHeight;
+    g_canvasW = controller.canvasWidth;
+    g_chipSize = Math.floor(g_canvasH/20);
+    ctx =controller.context;
 
     // g_cameraMapOffsetX = this.g_chipSize*-1; //カメラのマップX座標
     // g_cameraMapOffsetY = this.g_chipSize*1; //カメラのマップY座標 
 
+    characters = [
+        new Character('img/bou.PNG',[1,1],"player"),
+    ];
+    map = new Map();
     play = new Play();
-
-
+    
     main(); //loop開始
 }
 
 
+/**
+ * メインループ
+ */
 function main(){
+    // メニューを表示する場合は，ここに追加
     if(g_gameOverFlg){
         console.log('out');
         return;

@@ -5,7 +5,7 @@
  */
 
  class Map{
-     constructor(playerOffsetX,playerOffsetY){
+     constructor(){
          this.img = new Image();
          this.img.src='img/chip.png';
          this.mapChip =[
@@ -30,19 +30,15 @@
             [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,2,2,2,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1],
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-1,-1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],
             [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,-1,-1,-1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-        ];
-        for(var i=0;i<this.mapChip.length;i++){
-        }
+        ]
         this.size = g_chipSize; //サイズ
         this.width = this.mapChip[0].length * this.size; //マップの横の距離
         this.height = this.mapChip.length*this.size; //マップの縦の距離
         this.offsetX; //キャンバス座標における描画X座標
         this.offsetY; //キャンバス座標における描画Y座標
+        this.dotSize = 32;
         
         this.collisionNumbers = [0,1,2]; //衝突ブロック
-
-        this.ex_x=playerOffsetX;
-        this.ex_y=playerOffsetY;
      }
 
      draw(cameraOffsetX,cameraOffsetY){
@@ -50,6 +46,9 @@
         var indexY=0; //画面切り抜き位置
         this.offsetX = -cameraOffsetX;
         this.offsetY = -cameraOffsetY;
+
+        ctx.fillStyle = '#87ceeb';
+        ctx.fillRect(0,0,this.width,this.height);
     
         for(var y=0;y<this.mapChip.length;y++){
             for(var x=0;x<this.mapChip[0].length;x++){
@@ -60,28 +59,27 @@
                         break;
                     case -1:
                         //空
-                        indexX=96;
-                        break;
+                        continue;
                     case 1:
                         //地面(草)
-                        indexX=32;
+                        indexX=this.dotSize;
                         break;
                     case 2:
                         //地面(土)
-                        indexX=64;
+                        indexX=this.dotSize*2;
                         break;
                 }
-                ctx.drawImage(this.img,indexX,indexY,32,32,x*this.size+this.offsetX,y*this.size+this.offsetY,this.size,this.size);
+                ctx.drawImage(this.img,indexX+1,indexY+1,this.dotSize-1,this.dotSize-1,x*this.size+this.offsetX,y*this.size+this.offsetY,this.size,this.size);
             }
         }
      }
 
-     horizontalCollision(playerOffsetX,playerOffsetY){
+     horizontalCollision(playerOffsetX,playerOffsetY,ex_x){ //ex_ は移動前の座標
         //ここで受け取る座標は仮
         var offset={x:playerOffsetX,y:playerOffsetY};
 
         //前回と値が変わってなかったら何もせず抜ける
-        if(offset.x==this.ex_x){
+        if(offset.x==ex_x){
             return offset;
         }
 
@@ -131,7 +129,7 @@
         var lowerL = this.mapChip[ye][xs];
 
         //右側衝突
-        if(offset.x>this.ex_x){
+        if(offset.x>ex_x){
             for(var i=0;i<this.collisionNumbers.length;i++){
                 if(upperR == this.collisionNumbers[i] || lowerR == this.collisionNumbers[i]){
                     offset.x = xs * this.size;
@@ -141,7 +139,7 @@
         }
 
         //左側衝突
-        if(offset.x<this.ex_x){
+        if(offset.x<ex_x){
             for(var i=0;i<this.collisionNumbers.length;i++){
                 if(upperL == this.collisionNumbers[i] || lowerL == this.collisionNumbers[i]){
                     offset.x = xe * this.size;
@@ -150,11 +148,10 @@
             }
         }
 
-        this.ex_x=offset.x;
         return offset;
      }
 
-     verticalCollision(playerOffsetX,playerOffsetY){
+     verticalCollision(playerOffsetX,playerOffsetY,ex_y){
         //ここで受け取る座標は仮
         var offset={
             x:playerOffsetX,
@@ -184,7 +181,7 @@
         var lowerL = this.mapChip[ye][xs];
 
         //下側衝突
-        if(offset.y>this.ex_y){
+        if(offset.y>ex_y){
             for(var i=0;i<this.collisionNumbers.length;i++){
                 if(lowerL == this.collisionNumbers[i] || lowerR == this.collisionNumbers[i]){
                     offset.y = ys * this.size;
@@ -194,7 +191,7 @@
         }
 
         //上側衝突
-        if(offset.y<this.ex_y){
+        if(offset.y<ex_y){
             for(var i=0;i<this.collisionNumbers.length;i++){
                 if(upperL == this.collisionNumbers[i] || upperR == this.collisionNumbers[i]){
                     offset.y = ye * this.size;
@@ -204,7 +201,6 @@
         }
 
         //上にも下にも当たっていない＝空中=座標更新無し
-        this.ex_y = offset.y;
         return offset;
      }
  }
